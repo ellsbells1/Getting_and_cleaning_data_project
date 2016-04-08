@@ -57,8 +57,8 @@ meanorstd <-testtrainnames$V2[grep("mean\\(\\)|std\\(\\)", testtrainnames$V2)]
 
 ## label subset
 selectedNames<-c(as.character(meanorstd), "subject", "activity" )
-> MeanorStdData<-subset(Wholedata,select=selectedNames)
-> View(MeanorStdData)
+MeanorStdData<-subset(Wholedata,select=selectedNames)
+View(MeanorStdData)
 
 
 ## 3. Uses descriptive activity names to name the activities in the data set 
@@ -99,12 +99,21 @@ names(MeanorStdData)<- gsub("BodyBody", "Body", names (MeanorStdData))
 names(MeanorStdData)<- gsub("Acc", "Accelerometer", names (MeanorStdData))
 names(MeanorStdData)<- gsub("Mag", "Magnitude", names (MeanorStdData))
 
+##check descriptive names
+View(MeanorStdData)
+names(MeanorStdData)
 
 ## 5. From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
 
 ## dataset from step 4 = MeanorStdData
 ## create a second independent dataset
-Tidy <- data.table(MeanorStdData)
+Tidy <- write.table(MeanorStdData)
 
 ##calculate the average (mean) for each variable for each activity and each subject (person)
 TidyAvg <- Tidy [,lapply(.SD, mean), by 'participants', 'activity']
+
+## this may work:
+Tidy2<-aggregate(. ~subject + activity, MeanorStdData, mean)
+Tidy2<-Tidy2[order(Tidy2$subject,Tidy2$activity),]
+write.table(Tidy2, file = "tidydata.txt",row.name=FALSE)
+
