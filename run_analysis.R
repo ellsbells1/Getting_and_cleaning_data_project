@@ -107,13 +107,9 @@ names(MeanorStdData)
 
 ## dataset from step 4 = MeanorStdData
 ## create a second independent dataset
-Tidy <- write.table(MeanorStdData)
 
-##calculate the average (mean) for each variable for each activity and each subject (person)
-TidyAvg <- Tidy [,lapply(.SD, mean), by 'participants', 'activity']
+write.table(MeanorStdData, "/Users/eleanordurant/downloads/tidy.txt", row.name=FALSE)
 
-## this may work:
-Tidy2<-aggregate(. ~subject + activity, MeanorStdData, mean)
-Tidy2<-Tidy2[order(Tidy2$subject,Tidy2$activity),]
-write.table(Tidy2, file = "tidydata.txt",row.name=FALSE)
+## view data table to check 
+tidy = read.table("/Users/eleanordurant/downloads/tidy.txt")
 
